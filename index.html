@@ -7,10 +7,10 @@
 <!-- ВЕРСИЯ 7 -->
 <style>
   :root{
-    --teal:#2c8f9c;      /* основной цвет (с Pantone-фото) */
-    --mag:#97355c;       /* второй цвет */
-    --bg:#f7f0ee;        /* фон */
-    --ink:#3c3237;       /* текст */
+    --teal:#5f7161;      /* основной цвет (с Pantone-фото) */
+    --mag:#b14d5c;       /* второй цвет */
+    --bg:#f4f1ea;        /* фон */
+    --ink:#2c322e;       /* текст */
   }
   @font-face{
     font-family:'Dela Gothic One';
@@ -28,14 +28,17 @@
   h2{font-family:'Dela Gothic One',sans-serif;font-size:24px;margin-bottom:16px;color:var(--mag)}
 
   /* ШАПКА */
-  .hero{min-height:56vh;display:flex;flex-direction:column;justify-content:center;text-align:center;
-        background:linear-gradient(160deg,var(--teal),#2c8f9c)}
-  .master-photo{width:150px;height:150px;border-radius:50%;object-fit:cover;margin:0 auto 20px;
-                border:4px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-  .hero h1{font-family:'Dela Gothic One',sans-serif;font-size:38px;color:#fff;letter-spacing:1px}
-  .hero p{color:#dff0f2;margin-top:12px;font-size:18px}
-  .hero a{display:inline-block;margin-top:32px;padding:14px 34px;background:var(--mag);color:#fff;
+  .hero{padding:52px 20px 40px;display:flex;flex-direction:column;align-items:center;
+        text-align:center;background:var(--bg)}
+  .master-photo{width:310px;height:350px;object-fit:cover;display:block;margin:0;
+                border:5px solid var(--mag);border-radius:150px 150px 2px 2px;
+                box-shadow:0 10px 26px rgba(51,38,31,.15)}
+  .hero-greet{font-size:19px;line-height:1.7;color:var(--ink);margin:24px auto 0}
+  .name-hl{background:var(--mag);color:#fff;padding:1px 8px 3px;border-radius:4px}
+  
+  .hero a{display:inline-block;margin-top:28px;padding:14px 34px;background:var(--mag);color:#fff;
           text-decoration:none;border-radius:30px;font-size:17px}
+
 
   /* МОИ РАБОТЫ — горизонтальная лента */
   .works{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
@@ -54,12 +57,13 @@
   }
 
   /* НОГОТЬ — растёт при прокрутке */
-  .nail-sec{padding:0;height:115vh}
+  .nail-sec{padding:0;height:180vh}
   .nail-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
                align-items:center;justify-content:flex-start;overflow:hidden}
   .nail-title{position:absolute;top:26px;font-size:30px;color:var(--mag);z-index:3}
   .nail-wrap{position:relative;height:56vh;margin-top:80px}
-  .nail{height:100%;will-change:transform,clip-path}
+  .nail{height:100%;will-change:clip-path;
+        transition:clip-path .8s cubic-bezier(.45,0,.25,1)}
   .mark{position:absolute;white-space:nowrap;font-size:25px;opacity:0;transition:opacity .1s}
   .mark-num{right:calc(100% + 12px);color:var(--teal);font-weight:700;text-align:right;
             display:flex;align-items:center;justify-content:flex-end;gap:8px}
@@ -108,9 +112,13 @@
 
 <header class="hero">
   <img class="master-photo" src="img/FotoMastera.png" alt="Дарья — мастер маникюра">
-  <h1>Дарья</h1>
-  <p>мастер маникюра · Мурино</p>
-  <a href="#contacts">Записаться</a>
+  <p class="hero-greet">
+    Всем привет! Меня зовут<br>
+    <span class="name-hl">Дарья</span> и я готова делать всё,<br>
+    что вы пожелаете на<br>
+    ваших ногтях!
+  </p>
+  
 </header>
 
 <section>
@@ -173,6 +181,7 @@
   <!-- ИНСТРУКЦИЯ: замените href="#" на свои ссылки, например
        https://t.me/ваш_ник и https://instagram.com/ваш_ник -->
   <a href="#" id="tgLink">Telegram</a>
+  <a href="https://dikidi.app/1683606" target="_blank">Dikidi</a>
   <a href="#" id="instLink">Instagram</a>
 </section>
 
@@ -219,32 +228,45 @@ PRICES.forEach((p,i)=>{
   items.push([n, pr]);   /* пара: [размер, цена] — порог считаем по паре, бага больше нет */
 });
 const sec = document.getElementById('nailSec');
-/* Плавная анимация: цель -> сглаживание -> кадр */
-let targetP = 0, curP = 0;
-function calcTarget(){
+
+
+/* === НОГОТЬ РАСТЁТ СТУПЕНЯМИ === */
+const N = PRICES.length;
+let STEPS = [];
+/* уровни измеряем по реальным меткам — ноготь встанет ровно на чёрточку */
+function measureSteps(){
+  const H = wrap.clientHeight;
+  const pos = items.map(pair => (pair[0].offsetTop + pair[0].offsetHeight/2) / H);
+  const gap = pos.length > 1 ? (pos[1]-pos[0]) : 0.1;
+  const start = Math.max(0.12, pos[0]-gap);   /* короткий ноготь ниже XS */
+  STEPS = [start, ...pos];
+}
+function levelFromP(p){
+  let lvl = 0;
+  for(let k = 0; k < N; k++){
+    if(p >= (k+1)/(N+1)) lvl = k + 1;
+  }
+  return lvl;
+}
+function updateNail(){
   const r = sec.getBoundingClientRect();
   const total = r.height - innerHeight;
-  targetP = Math.min(1, Math.max(0, -r.top / total));
-}
-addEventListener('scroll', calcTarget, {passive:true});
-addEventListener('resize', calcTarget);
-calcTarget();
-
-function tick(){
-  curP += (targetP - curP) * 0.09;              /* инерция — движение маслянистое */
-  const p = Math.min(1, Math.max(0, curP));
-  const reveal = Math.min(1, 0.40 + 0.60*p);    /* старт с длины ~40% — короткие ногти с мясом убраны */
-  const cut = (1 - reveal) * 100;
-  /* чёткий срез, без растворения: ноготь растёт от кутикулы к кончику */
-  nailImg.style.clipPath = `inset(0 0 ${cut}% 0)`;
+  const p = Math.min(1, Math.max(0, -r.top / total));
+  const lvl = levelFromP(p);
+  const H = wrap.clientHeight;
+  nailImg.style.clipPath = `inset(0 0 ${(1 - STEPS[lvl]) * H}px 0)`;
   items.forEach((pair,k)=>{
-    const vis = p >= (k+1)/(PRICES.length+1) ? 1 : 0;
+    const vis = lvl >= k + 1 ? 1 : 0;
     pair[0].style.opacity = vis;
     pair[1].style.opacity = vis;
   });
-  requestAnimationFrame(tick);
 }
-requestAnimationFrame(tick);
+addEventListener('scroll', updateNail, {passive:true});
+addEventListener('resize', ()=>{ measureSteps(); updateNail(); });
+measureSteps();
+updateNail();
+
+
 
 /* --- Отзывы: стрелки + свайп --- */
 document.getElementById('ratingVal').textContent = RATING;
