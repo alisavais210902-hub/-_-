@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дарья — мастер маникюра | Мурино</title>
+<!-- ВЕРСИЯ 7 -->
+<style>
+  :root{
+    --teal:#2c8f9c;      /* основной цвет (с Pantone-фото) */
+    --mag:#97355c;       /* второй цвет */
+    --bg:#f7f0ee;        /* фон */
+    --ink:#3c3237;       /* текст */
+  }
+  @font-face{
+    font-family:'Dela Gothic One';
+    src:url('fonts/DelaGothicOne_Regular.ttf') format('truetype');
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:'Departura';
+    src:url('fonts/Departura Extra Light.otf') format('opentype');
+    font-weight:300;font-style:normal;font-display:swap;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Departura',-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:300;background:var(--bg);color:var(--ink);overflow-x:hidden}
+  section{padding:36px 20px}
+  h2{font-family:'Dela Gothic One',sans-serif;font-size:24px;margin-bottom:16px;color:var(--mag)}
+
+  /* ШАПКА */
+  .hero{min-height:56vh;display:flex;flex-direction:column;justify-content:center;text-align:center;
+        background:linear-gradient(160deg,var(--teal),#2c8f9c)}
+  .master-photo{width:150px;height:150px;border-radius:50%;object-fit:cover;margin:0 auto 20px;
+                border:4px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .hero h1{font-family:'Dela Gothic One',sans-serif;font-size:38px;color:#fff;letter-spacing:1px}
+  .hero p{color:#dff0f2;margin-top:12px;font-size:18px}
+  .hero a{display:inline-block;margin-top:32px;padding:14px 34px;background:var(--mag);color:#fff;
+          text-decoration:none;border-radius:30px;font-size:17px}
+
+  /* МОИ РАБОТЫ — горизонтальная лента */
+  .works{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+         padding:4px 20px 18px;margin:0 -20px;-webkit-overflow-scrolling:touch}
+  .works::-webkit-scrollbar{display:none}
+  .works img{width:78vw;max-width:340px;aspect-ratio:1;object-fit:cover;border-radius:18px;
+             scroll-snap-align:center;flex:0 0 auto}
+.swipe-hint{display:flex;align-items:center;justify-content:center;gap:10px;
+              margin-top:12px;color:#9b8f94;font-size:15px}
+  .swipe-finger{display:inline-block;width:28px;
+                animation:sway 1.6s ease-in-out infinite}
+  @keyframes sway{
+    0%,100%{transform:translateX(0) rotate(0deg)}
+    25%{transform:translateX(8px) rotate(12deg)}
+    75%{transform:translateX(-8px) rotate(-12deg)}
+  }
+
+  /* НОГОТЬ — растёт при прокрутке */
+  .nail-sec{padding:0;height:115vh}
+  .nail-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+               align-items:center;justify-content:flex-start;overflow:hidden}
+  .nail-title{position:absolute;top:26px;font-size:30px;color:var(--mag);z-index:3}
+  .nail-wrap{position:relative;height:56vh;margin-top:80px}
+  .nail{height:100%;will-change:transform,clip-path}
+  .mark{position:absolute;white-space:nowrap;font-size:25px;opacity:0;transition:opacity .1s}
+  .mark-num{right:calc(100% + 12px);color:var(--teal);font-weight:700;text-align:right;
+            display:flex;align-items:center;justify-content:flex-end;gap:8px}
+  .mark-num::after{content:"";width:20px;height:2px;background:var(--teal);opacity:.6;flex:0 0 auto}
+  .mark-price{left:calc(100% + 12px);display:flex;align-items:center;gap:8px;color:var(--ink)}
+  .mark-price::before{content:"";width:20px;height:2px;background:var(--mag);opacity:.6;flex:0 0 auto}
+
+  /* СЕРТИФИКАТ */
+  .cert {
+    margin-top: -300px;
+}
+  .cert img{width:100%;max-width:560px;display:block;margin:0 auto;border-radius:14px;
+            box-shadow:0 10px 30px rgba(0,0,0,.12)}
+
+  /* АДРЕС */
+  .addr{background:var(--teal);color:#fff;text-align:center}
+  .addr-photo{width:100%;max-width:560px;border-radius:16px;display:block;margin:0 auto 18px;
+              box-shadow:0 8px 24px rgba(0,0,0,.2)}
+  .addr h2{color:#fff}
+  .addr a{display:inline-block;margin-top:22px;padding:14px 30px;background:#fff;color:var(--teal);
+          text-decoration:none;border-radius:30px;font-weight:600}
+
+  /* ОТЗЫВЫ */
+  .rev-summary{text-align:center;margin-bottom:18px;font-size:17px}
+  .rev-summary b{color:var(--mag);font-size:22px}
+  .rev-viewport{overflow:hidden;border-radius:18px}
+  .rev-track{display:flex;transition:transform .35s ease}
+  .rev-card{flex:0 0 100%;background:#fff;padding:26px 22px;border-radius:18px}
+  .rev-card .stars{color:var(--mag);font-size:18px;letter-spacing:2px}
+  .rev-card .name{font-weight:700;margin:10px 0 2px;color:var(--teal)}
+  .rev-card .date{font-size:13px;color:#9b8f94;margin-bottom:10px}
+  .rev-card .service{font-size:13px;color:var(--mag);margin-bottom:8px;font-weight:600}
+  .rev-card p{font-size:15px;line-height:1.5}
+  .rev-nav{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:18px}
+  .rev-nav button{width:44px;height:44px;border-radius:50%;border:none;background:var(--mag);
+                  color:#fff;font-size:20px;cursor:pointer}
+  .rev-counter{font-size:14px;color:#9b8f94}
+
+  /* КОНТАКТЫ */
+  .contacts{text-align:center}
+  .contacts a{display:inline-flex;align-items:center;gap:10px;margin:8px 6px;padding:13px 24px;
+              border:2px solid var(--teal);color:var(--teal);border-radius:30px;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="master-photo" src="img/FotoMastera.png" alt="Дарья — мастер маникюра">
+  <h1>Дарья</h1>
+  <p>мастер маникюра · Мурино</p>
+  <a href="#contacts">Записаться</a>
+</header>
+
+<section>
+  <h2>Мои работы</h2>
+  <div class="works">
+    <img src="img/Manikyur1.jpg" alt="Работа 1">
+    <img src="img/Manikyur2.jpg" alt="Работа 2">
+    <img src="img/Manikyur3.jpg" alt="Работа 3">
+    <img src="img/Manikyur4.jpg" alt="Работа 4">
+    <img src="img/Manikyur5.jpg" alt="Работа 5">
+  </div>
+  </div>
+  <div class="swipe-hint">
+    <img class="swipe-finger" src="img/Palec.png" alt="листайте">
+    <span>Листайте фотографии</span>
+  </div>
+</section>
+</section>
+
+<!-- НОГОТЬ: блок 130vh, ноготь растёт при прокрутке -->
+<section class="nail-sec" id="nailSec">
+  <div class="nail-sticky">
+    <div class="nail-title">Цена зависит от длины</div>
+    <div class="nail-wrap">
+      <img class="nail" id="nail" src="img/Nogot.png" alt="Ноготь">
+      <!-- Черточки и цены генерируются скриптом -->
+    </div>
+  </div>
+</section>
+
+<section class="cert">
+  <h2>Сертификат</h2>
+  <img src="img/Sertifikat.png" alt="Сертификат мастера">
+</section>
+
+<section class="addr">
+  <h2>Как меня найти</h2>
+  <img class="addr-photo" src="img/FotoMesto.png" alt="Место, где я принимаю">
+  <p style="font-size:18px">Мурино, Ручьевский проспект 3к1</p>
+  <a href="https://yandex.ru/maps/?rtext=~Мурино,%20Ручьевский%20проспект%203к1&rtt=auto" target="_blank">
+    Проложить маршрут в Яндекс Картах
+  </a>
+</section>
+
+<section>
+  <h2>Отзывы</h2>
+  <div class="rev-summary"><b id="ratingVal"></b> из 5 · <span id="totalVal"></span> отзывов на Dikidi</div>
+  <div class="rev-viewport">
+    <div class="rev-track" id="revTrack"></div>
+  </div>
+  <div class="rev-nav">
+    <button id="revPrev">‹</button>
+    <span class="rev-counter" id="revCounter">1 / 5</span>
+    <button id="revNext">›</button>
+  </div>
+</section>
+
+<section class="contacts" id="contacts">
+  <h2>Записаться ко мне</h2>
+  <!-- ИНСТРУКЦИЯ: замените href="#" на свои ссылки, например
+       https://t.me/ваш_ник и https://instagram.com/ваш_ник -->
+  <a href="#" id="tgLink">Telegram</a>
+  <a href="#" id="instLink">Instagram</a>
+</section>
+
+<script>
+/* ═══ НАСТРОЙКИ — меняйте здесь ═══ */
+const RATING = 5;              /* средний балл из 5 */
+const TOTAL_REVIEWS = 117;     /* реальное число отзывов на Dikidi */
+const PRICES = [1800,1800,1900,1900,2000,2100]; /* цены по длине */
+
+/* ОТЗЫВЫ по возрастанию даты */
+const REVIEWS = [
+  {name:"Алёна Антонова", date:"17 марта 2026", stars:5, service:"Маникюр с покрытием гель-лак (+снятие)",
+   text:"Даша, лучший мастер по ноготочкам! Хожу только к ней уже больше 2х лет. Делает всё аккуратно и быстро) Советую её всем!"},
+  {name:"Александра", date:"24 марта 2026", stars:5, service:"Маникюр с покрытием гель-лак (+снятие)",
+   text:"Я в восторге от работы Дарьи! Просто умница: исправила все недостатки в работе предшествующего мастера. Всё сделала на десять баллов с плюсом. Теперь буду ходить только к ней. Спасибо за подарочек в виде крема"},
+  {name:"Анастасия", date:"3 апреля 2026", stars:5, service:"Снятие гель-лака",
+   text:"Хочу выразить свою благодарность за мой лучший маникюр! Я в полном восторге от работы Даши. Рекомендую всем, кто хочет качественный маникюр и профессиональный подход!"},
+  {name:"Мария", date:"1 сентября 2026", stars:5, service:"Маникюр с покрытием гель-лак (+снятие)",
+   text:"Дарья — прекрасный мастер, тактичный, вежливый. Профессионал своего дела. Твёрдая 5-ка!!! За маникюром и педикюром только к Дарье"},
+  {name:"Мадина", date:"19 октября 2026", stars:5, service:"Маникюр с покрытием гель-лак (+снятие)",
+   text:"Очень приятная девушка, работой осталась довольна, спасибо, обязательно приду ещё"}
+];
+/* ═══ КОНЕЦ НАСТРОЕК ═══ */
+
+
+/* --- Ноготь: черточки, цены, рост при прокрутке --- */
+const wrap = document.querySelector('.nail-wrap');
+const nailImg = document.getElementById('nail');
+/* размер на отметке i/7 длины: XXS (~2 см от кутикулы) -> XXL у самого кончика */
+const SIZES = ['XS','S','M','L','XL','XXL'];
+const items = [];
+PRICES.forEach((p,i)=>{
+  const top = (32 + i*(42/(PRICES.length-1))) + '%';   /* метки распределены по видимой длине ногтя: 38% -> 80% */
+  const n = document.createElement('div');
+  n.className = 'mark mark-num';
+  n.textContent = SIZES[i];
+  n.style.top = top;
+  wrap.appendChild(n);
+  const pr = document.createElement('div');
+  pr.className = 'mark mark-price';
+  pr.textContent = p + ' ₽';
+  pr.style.top = top;
+  wrap.appendChild(pr);
+  items.push([n, pr]);   /* пара: [размер, цена] — порог считаем по паре, бага больше нет */
+});
+const sec = document.getElementById('nailSec');
+/* Плавная анимация: цель -> сглаживание -> кадр */
+let targetP = 0, curP = 0;
+function calcTarget(){
+  const r = sec.getBoundingClientRect();
+  const total = r.height - innerHeight;
+  targetP = Math.min(1, Math.max(0, -r.top / total));
+}
+addEventListener('scroll', calcTarget, {passive:true});
+addEventListener('resize', calcTarget);
+calcTarget();
+
+function tick(){
+  curP += (targetP - curP) * 0.09;              /* инерция — движение маслянистое */
+  const p = Math.min(1, Math.max(0, curP));
+  const reveal = Math.min(1, 0.40 + 0.60*p);    /* старт с длины ~40% — короткие ногти с мясом убраны */
+  const cut = (1 - reveal) * 100;
+  /* чёткий срез, без растворения: ноготь растёт от кутикулы к кончику */
+  nailImg.style.clipPath = `inset(0 0 ${cut}% 0)`;
+  items.forEach((pair,k)=>{
+    const vis = p >= (k+1)/(PRICES.length+1) ? 1 : 0;
+    pair[0].style.opacity = vis;
+    pair[1].style.opacity = vis;
+  });
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* --- Отзывы: стрелки + свайп --- */
+document.getElementById('ratingVal').textContent = RATING;
+document.getElementById('totalVal').textContent = TOTAL_REVIEWS;
+const track = document.getElementById('revTrack');
+track.innerHTML = REVIEWS.map(r=>`
+  <div class="rev-card">
+    <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+    <div class="name">${r.name}</div>
+    <div class="date">${r.date}</div>
+    <div class="service">${r.service}</div>
+    <p>${r.text}</p>
+  </div>`).join('');
+let cur = 0;
+const counter = document.getElementById('revCounter');
+function show(i){
+  cur = (i + REVIEWS.length) % REVIEWS.length;
+  track.style.transform = `translateX(-${cur * 100}%)`;
+  counter.textContent = `${cur+1} / ${REVIEWS.length}`;
+}
+document.getElementById('revPrev').onclick = ()=>show(cur-1);
+document.getElementById('revNext').onclick = ()=>show(cur+1);
+let tx = null;
+track.addEventListener('touchstart', e=>tx=e.touches[0].clientX, {passive:true});
+track.addEventListener('touchend', e=>{
+  if(tx===null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1));
+  tx = null;
+}, {passive:true});
+show(0);
+
+/* --- Заглушки контактов: предупреждение, пока ссылка не задана --- */
+['tgLink','instLink'].forEach(id=>{
+  const a = document.getElementById(id);
+  a.addEventListener('click', e=>{
+    if(a.getAttribute('href') === '#'){
+      e.preventDefault();
+      alert('Ссылка пока не задана. Откройте index.html в блокноте, найдите id="'+id+
+            '" и замените href="#" на свою ссылку (см. INSTRUKCIYA.txt).');
+    }
+  });
+});
+</script>
+</body>
+</html>
